@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Manage Vendors - Admin Dashboard</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Admin Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Vendors</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Manage Vendors</h2>
+            <a href="/admin/add-vendor" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Add New Vendor
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Company</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="vendor : ${vendors}">
+                                <td th:text="${vendor.id}">ID</td>
+                                <td th:text="${vendor.username}">Username</td>
+                                <td th:text="${vendor.firstName + ' ' + vendor.lastName}">Name</td>
+                                <td th:text="${vendor.email}">Email</td>
+                                <td th:text="${vendor.companyName}">Company</td>
+                                <td th:text="${vendor.phone}">Phone</td>
+                                <td>
+                                    <span th:if="${vendor.accountStatus == 'ACTIVE'}" class="badge bg-success">Active</span>
+                                    <span th:if="${vendor.accountStatus == 'INACTIVE'}" class="badge bg-secondary">Inactive</span>
+                                    <span th:if="${vendor.accountStatus == 'SUSPENDED'}" class="badge bg-danger">Suspended</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a th:href="@{/admin/vendors/edit/{id}(id=${vendor.id})}" class="btn btn-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a th:href="@{/admin/users/delete/{id}(id=${vendor.id})}" class="btn btn-danger"
+                                           onclick="return confirm('Are you sure you want to delete this vendor?')" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${vendors.empty}">
+                                <td colspan="8" class="text-center">No vendors found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

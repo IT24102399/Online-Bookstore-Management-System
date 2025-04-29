@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Manage Orders - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Orders</li>
+            </ol>
+        </nav>
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">All Orders</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Delivery Agent</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${order.id}">ORD123</td>
+                                <td th:text="${order.customerId}">CUST123</td>
+                                <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2023-01-01</td>
+                                <td th:text="${order.items.size()}">3</td>
+                                <td>$<span th:text="${order.totalAmount}">59.97</span></td>
+                                <td>
+                                    <span th:class="${'badge ' + (order.status == 'PENDING' ? 'bg-warning' : 
+                                                                 order.status == 'PAID' ? 'bg-info' : 
+                                                                 order.status == 'SHIPPED' ? 'bg-primary' : 
+                                                                 order.status == 'DELIVERED' ? 'bg-success' : 
+                                                                 'bg-danger')}"
+                                          th:text="${order.status}">Status</span>
+                                </td>
+                                <td th:text="${order.deliveryAgentId != null ? order.deliveryAgentId : 'Not Assigned'}">Delivery Agent</td>
+                                <td>
+                                    <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-sm btn-primary me-1">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                    <a th:if="${order.status == 'PAID' && order.deliveryAgentId == null}" 
+                                       th:href="@{/orders/{id}/assign-delivery(id=${order.id})}" 
+                                       class="btn btn-sm btn-info">
+                                        <i class="bi bi-truck"></i> Assign Delivery
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info" th:if="${orders.empty}">
+                    No orders found.
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

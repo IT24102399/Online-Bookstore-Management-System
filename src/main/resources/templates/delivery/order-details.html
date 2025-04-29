@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Order Details - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/delivery/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+            </ol>
+        </nav>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Order Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Order ID:</strong> <span th:text="${order.id}">ORD123</span></p>
+                        <p><strong>Order Date:</strong> <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2023-01-01</span></p>
+                        <p><strong>Status:</strong> 
+                            <span th:class="${'badge ' + (order.status == 'PENDING' ? 'bg-warning' : 
+                                                         order.status == 'PAID' ? 'bg-info' : 
+                                                         order.status == 'SHIPPED' ? 'bg-primary' : 
+                                                         order.status == 'DELIVERED' ? 'bg-success' : 
+                                                         'bg-danger')}"
+                                  th:text="${order.status}">Status</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Total Amount:</strong> $<span th:text="${order.totalAmount}">59.97</span></p>
+                        <p><strong>Shipping Address:</strong> <span th:text="${order.shippingAddress}">Shipping Address</span></p>
+                    </div>
+                </div>
+                
+                <h6 class="mb-3">Order Items</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${order.items}">
+                                <td th:text="${item.bookTitle}">Book Title</td>
+                                <td th:text="${item.quantity}">1</td>
+                                <td>$<span th:text="${item.price}">19.99</span></td>
+                                <td>$<span th:text="${item.price * item.quantity}">19.99</span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end">Total:</th>
+                                <th>$<span th:text="${order.totalAmount}">59.97</span></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="mt-4">
+                    <h6 class="mb-3">Update Order Status</h6>
+                    <form th:action="@{/delivery/orders/{id}/update-status(id=${order.id})}" method="post" class="row g-3">
+                        <div class="col-md-6">
+                            <select class="form-select" name="status" required>
+                                <option value="">Select Status</option>
+                                <option value="SHIPPED" th:selected="${order.status == 'PAID'}">SHIPPED</option>
+                                <option value="DELIVERED" th:selected="${order.status == 'SHIPPED'}">DELIVERED</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary">Update Status</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <a href="/delivery/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+    </section>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Payments - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <h2 class="mb-4" th:text="${session.userRole == 'ADMIN' ? 'All Payments' : 'My Payments'}">Payments</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="payment : ${payments}">
+                                <td th:text="${payment.id}">PAY123</td>
+                                <td th:text="${payment.orderId}">ORD123</td>
+                                <td th:text="${#temporals.format(payment.paymentDate, 'yyyy-MM-dd HH:mm')}">2023-01-01</td>
+                                <td>$<span th:text="${payment.amount}">59.97</span></td>
+                                <td th:text="${payment.paymentMethod}">CREDIT_CARD</td>
+                                <td>
+                                    <span th:class="${'badge ' + (payment.status == 'PENDING' ? 'bg-warning' : 
+                                                                 payment.status == 'COMPLETED' ? 'bg-success' : 
+                                                                 payment.status == 'FAILED' ? 'bg-danger' : 
+                                                                 'bg-info')}"
+                                          th:text="${payment.status}">Status</span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/payments/{id}(id=${payment.id})}" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info" th:if="${payments.empty}">
+                    No payments found.
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

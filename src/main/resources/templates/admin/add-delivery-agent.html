@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Add Delivery Agent - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/users/admin/delivery-agents">Delivery Agents</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add Delivery Agent</li>
+            </ol>
+        </nav>
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New Delivery Agent</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/users/admin/add-delivery-agent}" method="post" th:object="${deliveryAgent}">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" th:field="*{username}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="vehicleNumber" class="form-label">Vehicle Number</label>
+                            <input type="text" class="form-control" id="vehicleNumber" th:field="*{vehicleNumber}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="licenseNumber" class="form-label">License Number</label>
+                            <input type="text" class="form-control" id="licenseNumber" th:field="*{licenseNumber}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="/users/admin/delivery-agents" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add Delivery Agent</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

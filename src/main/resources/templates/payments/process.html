@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Process Payment - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/orders">Orders</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/orders/{id}(id=${order.id})}">Order Details</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Process Payment</li>
+            </ol>
+        </nav>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Payment Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6>Order Summary</h6>
+                        <p><strong>Order ID:</strong> <span th:text="${order.id}">ORD123</span></p>
+                        <p><strong>Order Date:</strong> <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2023-01-01</span></p>
+                        <p><strong>Total Amount:</strong> $<span th:text="${order.totalAmount}">59.97</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Shipping Information</h6>
+                        <p><strong>Shipping Address:</strong> <span th:text="${order.shippingAddress}">Shipping Address</span></p>
+                    </div>
+                </div>
+                
+                <form th:action="@{/payments/process}" method="post" th:object="${payment}">
+                    <input type="hidden" th:field="*{orderId}" />
+                    <input type="hidden" th:field="*{customerId}" />
+                    <input type="hidden" th:field="*{amount}" />
+                    
+                    <div class="mb-3">
+                        <label for="paymentMethod" class="form-label">Payment Method</label>
+                        <select class="form-select" id="paymentMethod" th:field="*{paymentMethod}" required>
+                            <option value="">Select Payment Method</option>
+                            <option value="CREDIT_CARD">Credit Card</option>
+                            <option value="DEBIT_CARD">Debit Card</option>
+                            <option value="PAYPAL">PayPal</option>
+                            <option value="BANK_TRANSFER">Bank Transfer</option>
+                        </select>
+                    </div>
+                    
+                    <div id="creditCardFields" class="card-details">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="cardNumber" class="form-label">Card Number</label>
+                                <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cardName" class="form-label">Name on Card</label>
+                                <input type="text" class="form-control" id="cardName" placeholder="John Doe">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="expiryMonth" class="form-label">Expiry Month</label>
+                                <select class="form-select" id="expiryMonth">
+                                    <option value="">MM</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="expiryYear" class="form-label">Expiry Year</label>
+                                <select class="form-select" id="expiryYear">
+                                    <option value="">YYYY</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">Complete Payment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

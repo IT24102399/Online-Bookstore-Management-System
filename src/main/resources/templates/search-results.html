@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Search Results - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <h2 class="mb-4">Search Results for "<span th:text="${keyword}">keyword</span>"</h2>
+        
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col" th:each="book : ${books}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="${book.author}">Author</h6>
+                        <p class="card-text" th:text="${#strings.abbreviate(book.description, 100)}">Description</p>
+                        <p class="card-text"><strong>$<span th:text="${book.price}">19.99</span></strong></p>
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-sm btn-primary">View Details</a>
+                            <span class="badge bg-secondary" th:text="${book.category}">Category</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-4" th:if="${books.empty}">
+            No books found matching "<span th:text="${keyword}">keyword</span>".
+        </div>
+        
+        <div class="mt-4">
+            <a href="/books" class="btn btn-primary">Browse All Books</a>
+        </div>
+    </section>
+</body>
+</html>

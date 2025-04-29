@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Manage Books - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Books</li>
+            </ol>
+        </nav>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4>All Books</h4>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="/books/add" class="btn btn-success">Add New Book</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Category</th>
+                                <th>Vendor ID</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="book : ${books}">
+                                <td th:text="${book.id}">ID</td>
+                                <td th:text="${book.title}">Title</td>
+                                <td th:text="${book.author}">Author</td>
+                                <td th:text="${book.isbn}">ISBN</td>
+                                <td>$<span th:text="${book.price}">19.99</span></td>
+                                <td th:text="${book.quantity}">10</td>
+                                <td th:text="${book.category}">Category</td>
+                                <td th:text="${book.vendorId}">Vendor ID</td>
+                                <td>
+                                    <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-sm btn-primary me-1">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                    <a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-sm btn-warning me-1">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                    <a th:href="@{/books/delete/{id}(id=${book.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info" th:if="${books.empty}">
+                    No books found.
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

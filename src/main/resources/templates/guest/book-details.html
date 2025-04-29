@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title th:text="${book.title + ' - Online Bookstore'}">Book Details - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle me-2"></i> You are browsing as a guest. <a href="/register" class="alert-link">Register</a> or <a href="/login" class="alert-link">Login</a> to purchase books and access more features.
+        </div>
+        
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/guest/browse">Guest Browsing</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${book.title}">Book Title</li>
+            </ol>
+        </nav>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <h2 th:text="${book.title}">Book Title</h2>
+                <h5 class="text-muted" th:text="${'by ' + book.author}">by Author</h5>
+                
+                <div class="mb-3">
+                    <span class="badge bg-primary" th:text="${book.category}">Category</span>
+                    <span class="badge bg-secondary" th:text="${'ISBN: ' + book.isbn}">ISBN</span>
+                </div>
+                
+                <h4 class="text-primary mb-3">$<span th:text="${book.price}">19.99</span></h4>
+                
+                <div class="mb-4">
+                    <h5>Description</h5>
+                    <p th:text="${book.description}">Book description goes here...</p>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i> You need to <a href="/register" class="alert-link">register</a> or <a href="/login" class="alert-link">login</a> to purchase this book.
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <a href="/register" class="btn btn-success">Register to Purchase Books</a>
+            <a href="/login" class="btn btn-outline-primary ms-2">Already have an account? Login</a>
+        </div>
+    </section>
+</body>
+</html>

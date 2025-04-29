@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Manage Customers - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Customers</li>
+            </ol>
+        </nav>
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">All Customers</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Full Name</th>
+                                <th>Phone Number</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="customer : ${customers}">
+                                <td th:text="${customer.id}">ID</td>
+                                <td th:text="${customer.username}">Username</td>
+                                <td th:text="${customer.email}">Email</td>
+                                <td th:text="${customer.fullName}">Full Name</td>
+                                <td th:text="${customer.phoneNumber}">Phone Number</td>
+                                <td th:text="${customer.address}">Address</td>
+                                <td>
+                                    <a th:href="@{/users/admin/delete/{id}(id=${customer.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert alert-info" th:if="${customers.empty}">
+                    No customers found.
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

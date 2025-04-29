@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Online Bookstore - Home</title>
+</head>
+<body>
+    <section>
+        <div class="jumbotron bg-light p-5 rounded mb-4">
+            <h1 class="display-4">Welcome to Online Bookstore</h1>
+            <p class="lead">Discover a world of books at your fingertips. Browse our collection and find your next favorite read.</p>
+            <hr class="my-4">
+            <p>Join our community of book lovers today!</p>
+            <a class="btn btn-primary btn-lg" href="/books" role="button">Browse Books</a>
+            <a class="btn btn-outline-primary btn-lg ms-2" href="/register" role="button" th:if="${session.user == null}">Sign Up</a>
+            <a class="btn btn-outline-secondary btn-lg ms-2" href="/guest/browse" role="button" th:if="${session.user == null}">Browse as Guest</a>
+        </div>
+
+        <h2 class="mb-4">Featured Books</h2>
+
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col" th:each="book : ${books}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="${book.author}">Author</h6>
+                        <p class="card-text" th:text="${#strings.abbreviate(book.description, 100)}">Description</p>
+                        <p class="card-text"><strong>$<span th:text="${book.price}">19.99</span></strong></p>
+                        <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-sm btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-truck fs-1 text-primary mb-3"></i>
+                        <h5 class="card-title">Fast Delivery</h5>
+                        <p class="card-text">Get your books delivered to your doorstep quickly and efficiently.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt fs-1 text-primary mb-3"></i>
+                        <h5 class="card-title">Secure Payments</h5>
+                        <p class="card-text">Shop with confidence using our secure payment system.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-book fs-1 text-primary mb-3"></i>
+                        <h5 class="card-title">Wide Selection</h5>
+                        <p class="card-text">Explore our vast collection of books across various genres.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

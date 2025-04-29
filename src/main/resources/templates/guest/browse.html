@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout/base :: layout(~{::title}, ~{::section})">
+<head>
+    <title>Guest Browsing - Online Bookstore</title>
+</head>
+<body>
+    <section>
+        <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle me-2"></i> You are browsing as a guest. <a href="/register" class="alert-link">Register</a> or <a href="/login" class="alert-link">Login</a> to purchase books and access more features.
+        </div>
+        
+        <h2 class="mb-4">Browse Books as Guest</h2>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form action="/guest/search" method="get" class="d-flex">
+                    <input class="form-control me-2" type="search" name="keyword" placeholder="Search books...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="dropdown float-end">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Browse by Category
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                        <li><a class="dropdown-item" href="/category?name=Fiction">Fiction</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Non-Fiction">Non-Fiction</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Science Fiction">Science Fiction</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Fantasy">Fantasy</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Mystery">Mystery</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Romance">Romance</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Thriller">Thriller</a></li>
+                        <li><a class="dropdown-item" href="/category?name=Biography">Biography</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col" th:each="book : ${books}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${book.title}">Book Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="${book.author}">Author</h6>
+                        <p class="card-text" th:text="${#strings.abbreviate(book.description, 100)}">Description</p>
+                        <p class="card-text"><strong>$<span th:text="${book.price}">19.99</span></strong></p>
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/guest/book-details/{id}(id=${book.id})}" class="btn btn-sm btn-primary">View Details</a>
+                            <span class="badge bg-secondary" th:text="${book.category}">Category</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-4" th:if="${books.empty}">
+            No books found.
+        </div>
+        
+        <div class="mt-4 text-center">
+            <a href="/register" class="btn btn-success">Register to Purchase Books</a>
+            <a href="/login" class="btn btn-outline-primary ms-2">Already have an account? Login</a>
+        </div>
+    </section>
+</body>
+</html>
